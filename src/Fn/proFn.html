@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title> ...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+<script>
+        function con (){
+            console.log("1")
+        }
+    //throttle  jieliu
+        function throttle(fn,delay=1500,context){  
+            // if(fn.tId) return;
+            // fn.tId = setTimeout(() => {
+            //     fn.call(context);
+            //     fn.tId = null
+            // }, delay);
+
+            var timer = null;
+            return function(){
+                if(timer) return ;
+                timer = setTimeout(()=>{
+                    fn.apply(this,arguments)
+                    timer = null
+                },delay)
+            }
+        }
+
+        window.onresize = throttle(con); // timer 所在的作用域？【...】
+    //debounce  fangdou
+        function debounce(fn,delay=500,context){
+            // console.log(fn)
+            // if(fn.tId) clearTimeout(fn.tId)
+            // fn.tId = setTimeout(function(){
+            //     fn.call(context)
+            // },delay);
+            let timer = null;
+            return function(){
+                if(timer) clearTimeout(timer);
+                timer = setTimeout(()=>{
+                    console.log(arguments)
+                    fn.apply(this,arguments);
+                },delay);
+            }
+        }
+        
+        // window.onresize = function(){
+        //     debounce(con)
+        // }
+        //window.onresize = debounce(con); // timer 所在的作用域？【...】
+        
+    //deep clone  //考虑利用缓存
+            let Obj = [1,[2,3],{name:{subName:'haha'},age:11,addr:null}];
+            let Obj1 = 2;
+            let result1 = JSON.parse(JSON.stringify(Obj));
+            function clone(value){
+                if(value === null) return null;
+                if(typeof value !== 'object') return value;
+                if(Array.isArray(value)) {
+                    value = value.map(item => clone(item));
+                    return [].concat(value);
+                }else {
+                    var newObj = {};
+                    Object.keys(value).forEach(item => {
+                        newObj[item] = clone(value[item])
+                    });
+                    //return newObj;
+                    //console.log(newObj)
+                    //console.log({...value})
+                    return {...value}
+                }
+            }
+            function deepClone(obj) {
+                let result = typeof  obj.splice === "function" ? [] : {};
+                if (obj && typeof obj === 'object') {
+                    for (let key in obj) {
+                        if (obj[key] && typeof obj[key] === 'object') {
+                            result[key] = deepClone(obj[key]);//如果对象的属性值为object的时候，递归调用deepClone,即在吧某个值对象复制一份到新的对象的对应值中。
+                        } else {
+                            result[key] = obj[key];//如果对象的属性值不为object的时候，直接复制参数对象的每一个键值到新的对象对应的键值对中。
+                        }
+
+                    }
+                    return result;
+                }
+                return obj;
+            }
+
+            let result2 = clone(Obj);
+            let result3 = deepClone(Obj);
+            console.log(result1,result2,result3)
+
+
+    //curry
+            function curry(){
+
+            }
+    //plat Array
+            var ary = [1,[1,2],[3,[4,5]]]
+            function flatArray(array, depth = 1){
+                let result = [];
+                array.forEach(item => {
+                    let d = depth;
+                    if(Array.isArray(item) && d>0){
+                        result.push(...(flatArray(item,--d)))
+                    }else {
+                        result.push(item)
+                    }
+                });
+                return result;
+            };
+            console.log(flatArray(ary,2));
+
+</script>
+</body>
+</html>
