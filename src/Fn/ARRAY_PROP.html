@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+    <!-- <script src="main.js"></script>
+</head> -->
+<body>
+    
+</body>
+<script>
+Array.prototype.getCopy = function(){
+    let uniqueObj = {},newArry=[];
+    console.log(this.length)
+	for(let i = 0;i<this.length;i++){
+        console.log(uniqueObj[this[i]],i)
+		if(!uniqueObj[this[i]]){
+			uniqueObj[this[i]] = true
+		}else {
+			newArry.push(this[i]);
+            this.splice(i,1)
+			i--;
+		}
+    }
+    console.log(newArry)
+    newArry = Array.from(new Set(newArry));
+    
+	return newArry;
+	
+};
+let arry1 = [1,2,3,2,1,1];
+let arry2 = arry1.getCopy();
+console.log(arry1, arry2);
+
+
+function mySort(){
+    console.log(arguments.length)
+    Array.prototype.slice.call(arguments,0)
+    var tags = [].slice.call(arguments,0);
+    tags.sort(function(a,b){
+        return a-b
+    })
+    console.log(tags)
+    return tags;
+}
+mySort(1,5,2,79,34,2,5)
+
+
+function sum(arr){
+    return arr.reduce((pre,cur,idx,arr)=>{
+        return pre+cur
+    })
+}
+</script>
+</html>

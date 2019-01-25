@@ -92,7 +92,19 @@
             let result2 = clone(Obj);
             let result3 = deepClone(Obj);
             console.log(result1,result2,result3)
-
+            //deepCopy
+            function deepCopy(p,c){
+                    var c = c || {};
+                    for(var i in p){
+                        if(typeof p[i] === 'object'){
+                            c[i] = (p[i].constructor === 'Array')?[]:{};
+                            deepCopy(p[i],c[i]);
+                        }else {
+                            c[i] = p[i];
+                        }
+                    }
+                    return c;
+                }
 
     //curry
             function curry(){
@@ -113,6 +125,86 @@
                 return result;
             };
             console.log(flatArray(ary,2));
+
+//排序 冒泡排序
+
+            function checkArray(array) {
+                if (!array || array.length <= 2) return
+            }
+            function swap(array, left, right) {
+                let rightValue = array[right]
+                array[right] = array[left]
+                array[left] = rightValue
+            }
+
+            function bubble(array) { //冒泡排序
+                checkArray(array);
+                for (let i = array.length - 1; i > 0; i--) {
+                    // 从 0 到 `length - 1` 遍历
+                    for (let j = 0; j < i; j++) {
+                    if (array[j] > array[j + 1]) swap(array, j, j + 1)
+                    }
+                }
+                return array;
+            }
+            function insertion(array) { //插入排序
+                checkArray(array);
+                for (let i = 1; i < array.length; i++) {
+                    for (let j = i - 1; j >= 0 && array[j] > array[j + 1]; j--)
+                    swap(array, j, j + 1);
+                }
+                return array;
+            }
+
+            function selection(array) { //选择排序
+                checkArray(array);
+                for (let i = 0; i < array.length - 1; i++) {
+                    let minIndex = i;
+                    for (let j = i + 1; j < array.length; j++) {
+                    minIndex = array[j] < array[minIndex] ? j : minIndex;
+                    }
+                    swap(array, i, minIndex);
+                }
+                return array;
+            }
+            //Q : 将 [2,0,2,1,1,0] 排序成 [0,0,1,1,2,2] 
+            //Q: 找出数组中第 K 大的元素
+
+// MVVM 简单实现
+            //Vue
+            var data = { name: 'yck' }
+            observe(data)
+            let name = data.name // -> get value
+            data.name = 'yyy' // -> change value
+
+            function observe(obj) {
+                // 判断类型
+                if (!obj || typeof obj !== 'object') {
+                    return
+                }
+                Object.keys(obj).forEach(key => {
+                    defineReactive(obj, key, obj[key])
+            })
+            }
+
+            function defineReactive(obj, key, val) {
+                // 递归子属性
+                observe(val)
+                Object.defineProperty(obj, key, {
+                    enumerable: true,
+                    configurable: true,
+                    get: function reactiveGetter() {
+                    console.log('get value')
+                    return val
+                    },
+                    set: function reactiveSetter(newVal) {
+                    console.log('change value')
+                    val = newVal
+                    }
+                })
+            }
+
+
 
 </script>
 </body>
